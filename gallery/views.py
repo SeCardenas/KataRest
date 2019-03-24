@@ -47,3 +47,19 @@ def login(request):
             return HttpResponse(serializers.serialize("json", [user]))
 
         return HttpResponse(serializers.serialize("json", []))
+
+@csrf_exempt
+def update_user(request, id=None):
+    if request.method == 'PUT':
+        json_user = json.loads(request.body)
+        first_name = json_user['first_name']
+        last_name = json_user['last_name']
+        email = json_user['email']
+
+        user = User.objects.get(id=id)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+
+        user.save()
+        return HttpResponse(serializers.serialize("json",[user]))
