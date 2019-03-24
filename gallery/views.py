@@ -63,3 +63,18 @@ def update_user(request, id=None):
 
         user.save()
         return HttpResponse(serializers.serialize("json",[user]))
+
+@csrf_exempt
+def edit_public(request):
+    if request.method == 'PUT':
+        json_images = json.loads(request.body)
+        images = json_images['images']
+        imagesnew = []
+
+        for image in images:
+            img = Image.objects.get(id=image['image'])
+            img.is_public = image['is_public']
+            img.save()
+            imagesnew.append(img)
+
+        return HttpResponse(serializers.serialize("json",imagesnew))
