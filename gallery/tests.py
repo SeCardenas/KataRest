@@ -58,3 +58,15 @@ class GalleryTestCase(TestCase):
         self.assertEqual(current_data[0]['fields']['first_name'], 'test4')
         self.assertEqual(current_data[0]['fields']['last_name'], 'test4')
         self.assertEqual(current_data[0]['fields']['email'], 'test4@test.com')
+
+    def test_marcar_imagenes(self):
+        user_model = User.objects.create_user(username='test5', password='1234', first_name='test',
+                                              last_name='test', email='test@test.com')
+        image1 = Image.objects.create(name='nuevo', url='No', description='testImage', type='jpg', user=user_model, is_public=True)
+        image2 = Image.objects.create(name='nuevo2', url='No', description='testImage', type='jpg', user=user_model, is_public=False)
+        response = self.client.put('/gallery/editPublic/', json.dumps(
+            {"images": [{"image": image1.id, "is_public": False}, {"image": image2.id, "is_public": True}]}),
+                                   content_type='application/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['is_public'], False)
+        self.assertEqual(current_data[1]['fields']['is_public'], True)
