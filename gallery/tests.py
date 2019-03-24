@@ -36,7 +36,7 @@ class GalleryTestCase(TestCase):
                              is_public=True)
         Image.objects.create(name='nuevo2', url='No', description='testImage', type='jpg', user=user_model,
                              is_public=False)
-        url = '/gallery/' + str(user_model.id)
+        url = '/gallery/' + str(user_model.id) + '/'
         response = self.client.get(url, format='json')
         current_data = json.loads(response.content)
         self.assertEqual(len(current_data),1)
