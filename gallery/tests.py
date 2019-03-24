@@ -47,3 +47,14 @@ class GalleryTestCase(TestCase):
         current_data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(current_data[0]['fields']['username'],'test3')
+
+    def test_editar_datos_persona(self):
+        user_model = User.objects.create_user(username='test4', password='1234', first_name='test',
+                                              last_name='test', email='test@test.com')
+        response = self.client.post('/gallery/edit/' + str(user_model.id) + '/' , json.dumps(
+            {"first_name": "test4", "last_name": "test4", "email": "test4@test.com"}),
+                                    content_type='application/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['first_name'], 'test4')
+        self.assertEqual(current_data[0]['fields']['last_name'], 'test4')
+        self.assertEqual(current_data[0]['fields']['email'], 'test4@test.com')
