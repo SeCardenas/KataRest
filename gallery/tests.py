@@ -16,8 +16,8 @@ class GalleryTestCase(TestCase):
     def test_count_images_list(self):
         user_model = User.objects.create_user(username='test', password='kd8wke-DE34', first_name='test',
                                               last_name='test', email='test@test.com')
-        Image.objects.create(name='nuevo', url='No', description='testImage', type='jpg', user=user_model)
-        Image.objects.create(name='nuevo2', url='No', description='testImage', type='jpg', user=user_model)
+        Image.objects.create(name='nuevo', url='No', description='testImage', type='jpg', user=user_model, is_public=True)
+        Image.objects.create(name='nuevo2', url='No', description='testImage', type='jpg', user=user_model, is_public=False)
 
         response = self.client.get('/gallery/')
         current_data = json.loads(response.content)
