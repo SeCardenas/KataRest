@@ -1,4 +1,4 @@
-    
+
 from django.urls import path
 
 from . import views
@@ -10,4 +10,5 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('edit/<int:id>/', views.update_user, name='updateUser'),
     path('editPublic/', views.edit_public, name='editPublic'),
+    path('addImage/<int:id>/', views.add_image, name='addImage'),
 ]

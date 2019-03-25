@@ -49,7 +49,7 @@ def login(request):
         return HttpResponse(serializers.serialize("json", []))
 
 @csrf_exempt
-def update_user(request, id=None):
+def update_user(request, id):
     if request.method == 'PUT':
         json_user = json.loads(request.body)
         first_name = json_user['first_name']
@@ -78,3 +78,19 @@ def edit_public(request):
             imagesnew.append(img)
 
         return HttpResponse(serializers.serialize("json",imagesnew))
+
+@csrf_exempt
+def add_image(request, id):
+    if request.method == 'POST':
+        json_image = json.loads(request.body)
+        name = json_image['name']
+        url = json_image['url']
+        description = json_image['description']
+        type1 = json_image['type']
+        is_public = json_image['is_public']
+
+        user = User.objects.get(id=id)
+
+        Image.objects.create(name=name, url=url, description=description, type=type1, user=user, is_public=is_public)
+
+        return HttpResponse(serializers.serialize("json",Image.objects.filter(user=id)))
