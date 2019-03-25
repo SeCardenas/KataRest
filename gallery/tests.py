@@ -70,3 +70,13 @@ class GalleryTestCase(TestCase):
         current_data = json.loads(response.content)
         self.assertEqual(current_data[0]['fields']['is_public'], False)
         self.assertEqual(current_data[1]['fields']['is_public'], True)
+
+    def test_adicionar_imagen(self):
+        user_model = User.objects.create_user(username='test6', password='1234', first_name='test',
+                                              last_name='test', email='test@test.com')
+        image1 = Image.objects.create(name='nuevo', url='No', description='testImage', type='jpg', user=user_model,
+                                      is_public=True)
+        response=self.client.post('/gallery/addImage/' + str(user_model.id) + '/',
+                                  json.dumps({"name": "image", "url": "https://Test", "description": "Imagen nueva", "type": "jpg", "is_public": True}), content_type='application/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(len(current_data),2)
